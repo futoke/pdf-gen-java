@@ -6,15 +6,7 @@ import java.io.IOException;
 
 import java.lang.Math;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -24,16 +16,57 @@ public class Main {
     private static final String DEST = "result/table.pdf";
 
     private static final Float PAGE_HEIGHT = 595.0f;
-    private static final Float TOP_MARGIN = 10.0f;
+    private static final Float TOP_MARGIN = 40.0f;
     private static final Float BOTTOM_MARGIN = 2.0f;
     private static final Float LEFT_MARGIN = 2.0f;
     private static final Float RIGHT_MARGIN = 2.0f;
+
+    private static Font tableNameFont = new Font(
+            Font.FontFamily.HELVETICA,
+            18,
+            Font.NORMAL,
+            BaseColor.BLUE
+    );
+    private static Font headerNameFont = new Font(
+            Font.FontFamily.HELVETICA,
+            12,
+            Font.BOLD,
+            BaseColor.MAGENTA
+    );
+    private static Font subheaderNameFont = new Font(
+            Font.FontFamily.HELVETICA,
+            10,
+            Font.BOLD,
+            BaseColor.MAGENTA
+    );
+    private static Font textNameFont = new Font(
+            Font.FontFamily.HELVETICA,
+            10,
+            Font.NORMAL,
+            BaseColor.BLACK
+    );
+
 
     public static void main(String[] args) throws IOException,
             DocumentException {
         File file = new File(DEST);
         file.getParentFile().mkdirs();
         new Main().createPdf(DEST);
+    }
+
+    private static void createTitle(Document document, String title)
+            throws DocumentException {
+        Paragraph titleParagraph = new Paragraph();
+        float spacingAfter = 10.0f;
+
+        titleParagraph.setFont(tableNameFont);
+        titleParagraph.add(title);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        // Instead of the top page margin.
+        titleParagraph.setLeading(TOP_MARGIN - spacingAfter);
+        titleParagraph.setSpacingAfter(spacingAfter);
+
+        document.add(titleParagraph);
     }
 
     public void createPdf(String dest) throws IOException, DocumentException {
@@ -53,21 +86,15 @@ public class Main {
 
         ///////////////////////////////////////////////////////////////////
 
-        Paragraph titleParagraph = new Paragraph();
-        float spacingAfter = 2.0f;
-
-        titleParagraph.add("Hello World");
-        titleParagraph.setAlignment(Element.ALIGN_CENTER);
-        // Instead of the top page margin.
-        titleParagraph.setLeading(TOP_MARGIN - spacingAfter);
-        titleParagraph.setSpacingAfter(spacingAfter);
-
-        document.add(titleParagraph);
+        createTitle(document, "Table name Font 4");
 
         /////////////////////////////////////////////////////////////////////
 
         Paragraph table = new Paragraph();
-        PdfPCell cell;
+        Paragraph cellHeader;
+        Paragraph cellSubheader;
+        Paragraph cellContent;
+        PdfPCell cell, nestedTableCell;
 
         // The main table fits top and bottom parts.
         PdfPTable mainTable = new PdfPTable(1);
@@ -90,31 +117,84 @@ public class Main {
         topTable.setSpacingAfter(0.0f);
 
         // Cell 1 (row 1).
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 1 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 1 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         cell.setFixedHeight(rowHeight);
         cell.setBorder(Rectangle.TOP | Rectangle.RIGHT | Rectangle.LEFT);
         topTable.addCell(cell);
 
         // Cell 2.
-        cell = new PdfPCell(new Phrase("2"));
+        cellHeader = new Paragraph("Header 3 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 3 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
         topTable.addCell(cell);
 
         // Cell 3.
-        cell = new PdfPCell(new Phrase("3"));
+        cellHeader = new Paragraph("Header 4 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 4 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         cell.setRowspan(2);
         topTable.addCell(cell);
 
         // Cell 4.
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 5 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 5 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         topTable.addCell(cell);
 
         // Cell 5.
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 6 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 6 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         cell.setBorder(Rectangle.TOP | Rectangle.RIGHT | Rectangle.LEFT);
         topTable.addCell(cell);
 
         // Cell 6 (row2).
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 2 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 2 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         cell.setFixedHeight(rowHeight);
         cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT | Rectangle.LEFT);
         topTable.addCell(cell);
@@ -125,27 +205,64 @@ public class Main {
         nestedTable.setSpacingBefore(0.0f);
         nestedTable.setSpacingAfter(0.0f);
 
-        PdfPCell nestedTableCell;
+        // Row 1 in the nested table.
+        cellHeader = new Paragraph("Header 9 Font 1", headerNameFont);
+        cellSubheader = new Paragraph("SubHeader 8_1 Font 3", subheaderNameFont);
+        cellSubheader.setFirstLineIndent(20.0f);
+        cellContent = new Paragraph("Text 8_1 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(30.0f);
 
-        nestedTableCell = new PdfPCell(new Phrase("Nested 1"));
+        nestedTableCell = new PdfPCell();
+        nestedTableCell.addElement(cellHeader);
+        nestedTableCell.addElement(cellSubheader);
+        nestedTableCell.addElement(cellContent);
+
         nestedTableCell.setBorder(PdfPCell.NO_BORDER);
         nestedTableCell.setFixedHeight(rowHeight / 2.0f);
         nestedTable.addCell(nestedTableCell);
 
-        nestedTableCell = new PdfPCell(new Phrase("Nested 1"));
+        // Row 2 in the nested table.
+        cellSubheader = new Paragraph("SubHeader 8_2 Font 3", subheaderNameFont);
+        cellSubheader.setFirstLineIndent(20.0f);
+        cellContent = new Paragraph("Text 8_2 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(30.0f);
+
+        nestedTableCell = new PdfPCell();
+        nestedTableCell.addElement(cellHeader);
+        nestedTableCell.addElement(cellSubheader);
+        nestedTableCell.addElement(cellContent);
         nestedTableCell.setBorder(PdfPCell.NO_BORDER);
         nestedTable.addCell(nestedTableCell);
 
+        cell = new PdfPCell();
         cell.setPadding(0);
         cell.addElement(nestedTable);
         topTable.addCell(cell);
 
         // Cell 8.
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 9 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 9 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         topTable.addCell(cell);
 
         // Cell 9.
-        cell = new PdfPCell(new Phrase("1"));
+        cellHeader = new Paragraph("Header 7 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 7 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
+
         cell.setBorder(Rectangle.BOTTOM | Rectangle.RIGHT | Rectangle.LEFT);
         topTable.addCell(cell);
 
@@ -162,11 +279,29 @@ public class Main {
         bottomTable.setSpacingBefore(0.0f);
         bottomTable.setSpacingAfter(0.0f);
 
-        cell = new PdfPCell(new Phrase("T2R1C1"));
+        // Left cell of the bottom table.
+        cellHeader = new Paragraph("Header 10 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 10 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
         cell.setFixedHeight(rowHeight);
         bottomTable.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("T2R1C2"));
+        // Right cell of the bottom table.
+        cellHeader = new Paragraph("Header 11 Font 1", headerNameFont);
+
+        cellContent = new Paragraph("Text 11 Font 2", textNameFont);
+        cellContent.setFirstLineIndent(20.0f);
+
+        cell = new PdfPCell();
+
+        cell.addElement(cellHeader);
+        cell.addElement(cellContent);
         bottomTable.addCell(cell);
 
         bottomTableCell.addElement(bottomTable);
@@ -174,7 +309,6 @@ public class Main {
 
         table.add(mainTable);
         document.add(table);
-
 
         document.close();
     }
