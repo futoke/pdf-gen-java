@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.lang.Math;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class Main {
+class Main {
 
     private static final String DEST = "result/table.pdf";
 
@@ -21,25 +19,25 @@ public class Main {
     private static final Float LEFT_MARGIN = 2.0f;
     private static final Float RIGHT_MARGIN = 2.0f;
 
-    private static Font tableNameFont = new Font(
+    private static final Font tableNameFont = new Font(
             Font.FontFamily.HELVETICA,
             18,
             Font.NORMAL,
             BaseColor.BLUE
     );
-    private static Font headerNameFont = new Font(
+    private static final Font headerNameFont = new Font(
             Font.FontFamily.HELVETICA,
             12,
             Font.BOLD,
             BaseColor.MAGENTA
     );
-    private static Font subheaderNameFont = new Font(
+    private static final Font subheaderNameFont = new Font(
             Font.FontFamily.HELVETICA,
             10,
             Font.BOLD,
             BaseColor.MAGENTA
     );
-    private static Font textNameFont = new Font(
+    private static final Font textNameFont = new Font(
             Font.FontFamily.HELVETICA,
             10,
             Font.NORMAL,
@@ -69,7 +67,7 @@ public class Main {
         document.add(titleParagraph);
     }
 
-    public void createPdf(String dest) throws IOException, DocumentException {
+    private void createPdf(String dest) throws IOException, DocumentException {
         Document document = new Document(
                 PageSize.A4.rotate(),
                 LEFT_MARGIN,
