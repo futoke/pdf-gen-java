@@ -1,13 +1,15 @@
 package com.futoke;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.FontFactory;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 class Main {
 
@@ -44,6 +46,19 @@ class Main {
             BaseColor.BLACK
     );
 
+    BaseFont bf;
+    Font f_title;
+    Font f_text;
+
+    public void setFont() throws DocumentException, IOException{
+        try{
+            bf = BaseFont.createFont("fonts/DroidSansFallback.ttf", BaseFont.IDENTITY_H , BaseFont.EMBEDDED);
+            f_title = new Font(bf, 14);
+            f_text = new Font(bf);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) throws IOException,
             DocumentException {
@@ -52,12 +67,16 @@ class Main {
         new Main().createPdf(DEST);
     }
 
-    private static void createTitle(Document document, String title)
-            throws DocumentException {
+    private void createTitle(Document document, String title)
+            throws DocumentException, IOException {
+
+
+        setFont();
+
         Paragraph titleParagraph = new Paragraph();
         float spacingAfter = 10.0f;
 
-        titleParagraph.setFont(tableNameFont);
+        titleParagraph.setFont(f_title);
         titleParagraph.add(title);
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
         // Instead of the top page margin.
@@ -69,22 +88,22 @@ class Main {
 
     private void createPdf(String dest) throws IOException, DocumentException {
         Document document = new Document(
-                PageSize.A4.rotate(),
-                LEFT_MARGIN,
-                RIGHT_MARGIN,
-                /*
-                Actually, top margin will define in the padding field
-                of the title paragraph.
-                */
-                TOP_MARGIN - TOP_MARGIN,
-                BOTTOM_MARGIN
+            PageSize.A4.rotate(),
+            LEFT_MARGIN,
+            RIGHT_MARGIN,
+            /*
+            Actually, top margin will define in the padding field
+            of the title paragraph.
+            */
+            TOP_MARGIN - TOP_MARGIN,
+            BOTTOM_MARGIN
         );
         PdfWriter.getInstance(document, new FileOutputStream(dest));
         document.open();
 
         ///////////////////////////////////////////////////////////////////
 
-        createTitle(document, "Table name Font 4");
+        createTitle(document, "Table name Font 4 (Я - кириллица, 我 - 中國)");
 
         /////////////////////////////////////////////////////////////////////
 
